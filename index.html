@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE CCTV RX</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Kanit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: radial-gradient(circle at center, #0d1b2a 0%, #010811 100%);
+      overflow: hidden;
+    }
+    
+    /* Neon Glowing Elements */
+    .neon-glow-emerald {
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    
+    .neon-text-emerald {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    }
+
+    .neon-glow-cyan {
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.25);
+    }
+
+    /* Glassmorphism Panel */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    /* Advanced Biometric Scan Animations */
+    .scanner-line {
+      animation: scan 3s ease-in-out infinite;
+    }
+    
+    @keyframes scan {
+      0%, 100% { top: 0%; opacity: 0.3; }
+      50% { top: 100%; opacity: 1; }
+    }
+
+    .rotate-slow {
+      animation: spin-slow 12s linear infinite;
+    }
+    .rotate-reverse {
+      animation: spin-reverse 8s linear infinite;
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spin-reverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    /* Pulse wave */
+    .pulse-ring {
+      animation: ring-pulse 2s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+    }
+
+    @keyframes ring-pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { transform: scale(1.15); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 antialiased flex items-center justify-center p-4">
+
+  <!-- Main Background Orbs -->
+  <div class="absolute w-[400px] h-[400px] rounded-full bg-emerald-500/10 blur-[120px] -top-20 -left-20"></div>
+  <div class="absolute w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[150px] -bottom-30 -right-20"></div>
+
+  <!-- Gateway Container Card -->
+  <div class="relative w-full max-w-md glass-panel rounded-[40px] p-8 text-center shadow-2xl overflow-hidden">
+    <!-- Top Decorative Line -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-cyan-500"></div>
+
+    <!-- Header Section -->
+    <div class="mb-8 relative z-10">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+        <span class="text-[11px] font-bold text-emerald-400 tracking-[0.2em] uppercase neon-text-emerald">Secure Handshake</span>
+      </div>
+      <h1 class="text-2xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+        LINE Secure Link
+      </h1>
+      <p class="text-xs text-slate-400 mt-1">กำลังเชื่อมต่อโพรโทคอลความปลอดภัยอัตโนมัติ</p>
+    </div>
+
+    <!-- Central Biometric Scanner Area -->
+    <div class="relative w-48 h-48 mx-auto my-10 flex items-center justify-center z-10">
+      
+      <!-- Pulse Rings -->
+      <div class="absolute inset-0 rounded-full border border-emerald-500/20 pulse-ring"></div>
+      
+      <!-- Outer Dial (Rotates Clockwise) -->
+      <div class="absolute inset-2 rounded-full border-2 border-dashed border-cyan-500/30 rotate-slow"></div>
+      
+      <!-- Inner Dial (Rotates Counter-Clockwise) -->
+      <div class="absolute inset-6 rounded-full border border-spaced border-emerald-500/40 rotate-reverse"></div>
+      
+      <!-- Core Fingerprint / Shield Unit -->
+      <div class="w-28 h-28 rounded-full bg-slate-900/60 flex items-center justify-center neon-glow-emerald relative overflow-hidden">
+        <i class="fa-solid fa-fingerprint text-4xl text-emerald-400 animate-pulse"></i>
+        <!-- Horizontal Laser Scanning Line -->
+        <div class="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent scanner-line"></div>
+      </div>
+    </div>
+
+    <!-- Progress / Status Messages -->
+    <div class="space-y-3 mb-8 relative z-10">
+      <div class="flex justify-center items-center gap-2">
+        <i id="status-icon" class="fa-solid fa-circle-notch fa-spin text-emerald-400 text-sm"></i>
+        <p id="status-title" class="text-sm font-bold text-slate-200">สแกนข้อมูลอัตลักษณ์พนักงาน...</p>
+      </div>
+      <p id="status-desc" class="text-xs text-slate-400 max-w-[280px] mx-auto leading-relaxed">
+        ดึงข้อมูลสิทธิ์และระบุตัวตนทางเทคโนโลยีความลับขั้นสูงเพื่อเข้าถึงข้อมูลกล้อง CCTV
+      </p>
+    </div>
+
+    <!-- Fallback / Error Console Box -->
+    <div id="error-console" class="hidden bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 text-left text-xs mb-6 relative z-10">
+      <div class="flex gap-2.5 text-rose-400 font-bold mb-1">
+        <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+        <span>ระบบตรวจพบข้อผิดพลาด (SDK Alert)</span>
+      </div>
+      <p id="error-message" class="text-slate-300 leading-normal pl-6">ไม่สามารถเข้าถึงชุดคำสั่งข้อมูล LIFF ได้สำเร็จ</p>
+    </div>
+
+    <!-- Secondary Safe Direct Button (Normally Hidden) -->
+    <div id="manual-action" class="hidden relative z-10">
+      <button onclick="triggerFallbackRedirect()" 
+        class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white py-3.5 px-6 rounded-2xl text-xs font-bold shadow-lg shadow-emerald-900/20 transition-all flex items-center justify-center gap-2">
+        <span>คลิกเพื่อเดินทางไปยังระบบหลัก</span>
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      </button>
+    </div>
+
+    <!-- Footer Privacy/PDPA Tag -->
+    <div class="mt-8 text-[10px] text-slate-500 flex items-center justify-center gap-1.5 relative z-10">
+      <i class="fa-solid fa-shield-halved text-emerald-500/70"></i>
+      <span>คุ้มครองสิทธิ์ความปลอดภัยส่วนบุคคล PDPA มั่นคง 100%</span>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURATION - กรุณาแก้ไขข้อมูลเหล่านี้เป็นของท่าน
+    // ==========================================
+    const LIFF_ID = "2009669941-ExW4NeWW"; // แทนที่ด้วย LIFF ID ขององค์กร (เช่น 200xxxxxxx-xxxxxxxx)
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwCzbDp8MDyBc2beZtViWsxqAtBWZnTLfxqL2UNPM3AbNT8YY4GWs27n9Dh2gKGo6oW4A/exec"; // URL หลักระบบ CCTV
+    
+    let resolvedUserId = null;
+
+    document.addEventListener("DOMContentLoaded", function() {
+      // ตรวจสอบความถูกต้องเบื้องต้นของค่า Config
+      if (LIFF_ID === "YOUR_LIFF_ID_HERE") {
+        showError("ยังไม่ได้ตั้งค่า LIFF ID", "กรุณานำรหัส LIFF ID จาก LINE Developer Console มากำหนดในสคริปต์ redirect.html ก่อนทดลองใช้งานจริง");
+        return;
+      }
+      
+      initLINEGateway();
+    });
+
+    /**
+     * ดึงสิทธิ์ผู้ใช้งานผ่าน LINE LIFF SDK
+     */
+    async function initLINEGateway() {
+      try {
+        updateStatus("กำลังประมวลผล LINE SDK...", "กำลังเรียกใช้โมดูลแลกเปลี่ยนข้อมูลผ่าน LINE Core Client API");
+        
+        // 1. ตรวจสอบและเริ่มต้นระบบ LIFF
+        await liff.init({ liffId: LIFF_ID });
+        
+        // 2. ตรวจสอบการเข้าใช้ หากยังไม่ได้ล็อกอินให้ดีดไปล็อกอินผ่าน LINE ทันที
+        if (!liff.isLoggedIn()) {
+          updateStatus("กำลังร้องขอสิทธิ์...", "พนักงานยังไม่ได้รับสิทธิ์ความปลอดภัย กำลังเปิดการล็อกอินระบบ LINE");
+          liff.login();
+          return;
+        }
+
+        // 3. ดึงประวัติข้อมูลโปรไฟล์พนักงาน
+        updateStatus("ดึงประวัติผู้ใช้สำเร็จ...", "กำลังดึงข้อมูล Token พนักงานเพื่อสร้างลิงก์การเข้าใช้งานแบบไร้รหัสผ่าน");
+        const profile = await liff.getProfile();
+        resolvedUserId = profile.userId;
+
+        if (resolvedUserId) {
+          // 4. ส่งผ่านข้อมูลอย่างรวดเร็วไปยังระบบหลัก GAS Web App
+          executeFinalRedirect(resolvedUserId);
+        } else {
+          throw new Error("ระบบดึงข้อมูล User ID ไม่ถูกต้องหรือว่างเปล่า");
+        }
+
+      } catch (err) {
+        console.error("LIFF Gateway Error: ", err);
+        showError("การตรวจสอบสิทธิ์ความปลอดภัยล้มเหลว", err.message || JSON.stringify(err));
+      }
+    }
+
+    /**
+     * ดำเนินการเปลี่ยนเส้นทางไปยัง Google Apps Script Web App
+     */
+    function executeFinalRedirect(userId) {
+      updateStatus("ยืนยันตัวตนแล้ว!", "การตรวจสอบความปลอดภัยเสร็จสมบูรณ์ กำลังพาท่านไปสู่หน้าฟอร์ม...");
+      
+      // เปลี่ยนไอคอนและสีสถานะเป็นทำงานเรียบร้อย
+      const icon = document.getElementById("status-icon");
+      icon.className = "fa-solid fa-circle-check text-emerald-400 text-lg animate-bounce";
+      
+      // จัดการและรักษาความปลอดภัยพารามิเตอร์ของ URL เดิม
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set("userId", userId); // ฝัง userId พนักงานลงไปใน Query Parameter
+      
+      const destination = `${GAS_WEB_APP_URL}?${urlParams.toString()}`;
+      
+      // ดำเนินการ Redirect ทันทีด้วยกลวิธีที่ปลอดภัยเพื่อป้องกันปัญหา Sandbox
+      setTimeout(() => {
+        window.location.replace(destination);
+      }, 600); // ดีเลย์สั้นๆ เพียง 0.6 วินาทีเพื่อความนุ่มนวลและให้เอฟเฟกต์แสดงผลได้เต็มอิ่ม
+    }
+
+    /**
+     * ฟังก์ชันกรณีฉุกเฉินให้พนักงานกดนำทางด้วยตนเอง
+     */
+    window.triggerFallbackRedirect = function() {
+      if (resolvedUserId) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("userId", resolvedUserId);
+        window.location.href = `${GAS_WEB_APP_URL}?${urlParams.toString()}`;
+      } else {
+        window.location.href = GAS_WEB_APP_URL;
+      }
+    }
+
+    // --- Helper Utilities ฝั่งการปรับเปลี่ยน UI ---
+
+    function updateStatus(title, desc) {
+      document.getElementById("status-title").textContent = title;
+      document.getElementById("status-desc").textContent = desc;
+    }
+
+    function showError(title, message) {
+      // อัปเดต UI ข้อความหลัก
+      document.getElementById("status-title").textContent = title;
+      document.getElementById("status-title").className = "text-sm font-bold text-rose-400 neon-text-rose";
+      document.getElementById("status-desc").textContent = "ระบบหยุดกระบวนการดีดส่งข้อมูลชั่วคราวเพื่อป้องกันสิทธิ์ความปลอดภัย";
+      
+      // ซ่อน/โชว์ ออบเจ็กต์แสดงผล
+      document.getElementById("status-icon").className = "fa-solid fa-circle-xmark text-rose-500 text-sm";
+      
+      const consoleBox = document.getElementById("error-console");
+      consoleBox.classList.remove("hidden");
+      document.getElementById("error-message").textContent = message;
+
+      // แสดงปุ่ม Manual เพื่อเป็นทางเลือกในการเดินทางต่อ
+      document.getElementById("manual-action").classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
